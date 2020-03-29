@@ -11,6 +11,7 @@ def process_request(sock):
         sock.shutdown(socket.SHUT_RDWR)
         sock.close()
 
+
 main_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 main_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -33,7 +34,8 @@ try:
             ssl_version=ssl.PROTOCOL_TLS_SERVER
         )
 
-        subprocess = multiprocessing.Process(target=process_request, args=(conn,))
+        subprocess = multiprocessing.Process(
+            target=process_request, args=(conn,))
         subprocess.start()
 
     main_socket.close()
