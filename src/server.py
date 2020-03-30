@@ -26,12 +26,24 @@ try:
         (client_socket, (client_ip, client_port)) = main_socket.accept()
         print("Conexion aceptada %s:%s. Procesando la peticion..." % (client_ip, client_port))
 
-        conn = ssl.wrap_socket(
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS,
+                                     ssl.OP_NO_SSLv2,
+                                     ssl.OP_NO_SSLv3,
+                                     ssl.OP_NO_TLSv1,
+                                     ssl.OP_NO_TLSv1_1,
+                                     ssl.OP_NO_TLSv1_2
+                                     )  # TLS 1.3
+
+        ciphers = 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:TLS_AES_128_CCM_8_SHA256:TLS_AES_128_CCM_SHA256'
+        context.set_ciphers(ciphers)
+
+        context.load_cert_chain(os.path.join(os.getcwd(), "src", "files", "server.crt"), 
+                                os.path.join(os.getcwd(), "src", "files", "server.key")
+        )
+
+        conn = context.wrap_socket(
             client_socket,
-            server_side=True,
-            certfile=os.path.join(os.getcwd(), "src", "files", "server.crt"),
-            keyfile=os.path.join(os.getcwd(), "src", "files", "server.key"),
-            ssl_version=ssl.PROTOCOL_TLS_SERVER
+            server_side=True
         )
 
         subprocess = multiprocessing.Process(

@@ -7,18 +7,13 @@ def cliente():
         aux = True
         while aux:
 
-            context = ssl.SSLContext(ssl.PROTOCOL_TLS,
-                                     ssl.OP_NO_SSLv2,
-                                     ssl.OP_NO_SSLv3,
-                                     ssl.OP_NO_TLSv1,
-                                     ssl.OP_NO_TLSv1_1,
-                                     ssl.OP_NO_TLSv1_2
-                                     )  # TLS 1.3
+            context = ssl.SSLContext(ssl.PROTOCOL_TLS)
+
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
             conn = context.wrap_socket(sock)
 
-            conn.connect(('46.234.133.44', 8443))
+            conn.connect(('localhost', 9992))
 
             input1 = bytes(input("Mensaje: "), 'utf-8')
 
