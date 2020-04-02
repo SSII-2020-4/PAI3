@@ -41,8 +41,6 @@ try:
         context.set_ciphers(ciphers)
 
         context.load_cert_chain(certificate_path, private_path, certificate_password)
-                                os.path.join(os.getcwd(), "src", "files", "server.key")
-        )
 
         conn = context.wrap_socket(
             client_socket,
