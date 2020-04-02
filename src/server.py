@@ -20,6 +20,9 @@ main_socket.bind(('localhost', 9992))
 
 main_socket.listen(300)
 
+certificate_path = os.path.join(os.path.dirname(os.getcwd()),"certificates", "certificate.pem")
+private_path = os.path.join(os.path.dirname(os.getcwd()),"certificates", "key.pem")
+certificate_password = "grupo4"
 try:
     aux = True
     while aux:
@@ -37,9 +40,7 @@ try:
         ciphers = 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:TLS_AES_128_CCM_8_SHA256:TLS_AES_128_CCM_SHA256'
         context.set_ciphers(ciphers)
 
-        context.load_cert_chain(os.path.join(os.getcwd(), "src", "files", "server.crt"), 
-                                os.path.join(os.getcwd(), "src", "files", "server.key")
-        )
+        context.load_cert_chain(certificate_path, private_path, certificate_password)
 
         conn = context.wrap_socket(
             client_socket,
