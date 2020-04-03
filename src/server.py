@@ -6,7 +6,8 @@ import ssl
 
 def process_request(sock):
     try:
-        sock.send(b"Mensaje recibido")
+        print(sock.recv(1024))
+        sock.send(b"200")
     finally:
         sock.shutdown(socket.SHUT_RDWR)
         sock.close()
