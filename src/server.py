@@ -17,7 +17,7 @@ main_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 main_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-main_socket.bind(('localhost', 9992))
+main_socket.bind(('localhost', 8443))
 
 main_socket.listen(300)
 
@@ -28,7 +28,10 @@ try:
     aux = True
     while aux:
         (client_socket, (client_ip, client_port)) = main_socket.accept()
-        print("Conexion aceptada %s:%s. Procesando la peticion..." % (client_ip, client_port))
+        print(
+            f"Conexion aceptada {client_ip}: {client_port}. \
+            Procesando la peticion..."
+        )
 
         context = ssl.SSLContext(ssl.PROTOCOL_TLS,
                                      ssl.OP_NO_SSLv2,
