@@ -1,10 +1,9 @@
 import os
 from functools import wraps
-from client import cliente
+from .client import cliente
 
 from flask import request
 from flask_restplus import Namespace, Resource, fields
-
 
 
 api = Namespace(
@@ -32,6 +31,7 @@ client_message = api.model(
         )
     }
 )
+
 
 @api.route("/")
 class ClientMessage(Resource):
