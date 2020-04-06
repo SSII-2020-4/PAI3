@@ -1,5 +1,15 @@
 import socket
 import ssl
+import os 
+from dotenv import load_dotenv
+
+from configuration import check_environment
+
+base_path = os.path.join(os.path.dirname(os.getcwd()), "client")
+load_dotenv(os.path.join(base_path, ".env"))
+
+# Check configuration and exit if exist errors
+config = check_environment()
 
 
 def cliente(message: tuple):
@@ -10,7 +20,7 @@ def cliente(message: tuple):
 
         conn = context.wrap_socket(sock)
 
-        conn.connect(('localhost', 8443))
+        conn.connect((os.environ['SEND_TO_IP'], int(os.environ['SEND_TO_PORT'])))
 
         conn.send(bytearray(message))
         respuesta = conn.recv(1024)
