@@ -3,11 +3,12 @@ import multiprocessing
 import os
 import socket
 import ssl
+import time
 
 from dotenv import load_dotenv
 
-from src.server.sqlite import Database
-from src.server.configuration import check_environment
+from sqlite import Database
+from configuration import check_environment
 
 base_path = os.path.join(os.path.dirname(os.getcwd()), "server")
 load_dotenv(os.path.join(base_path, ".env"))
@@ -94,12 +95,14 @@ def process_request(sock):
     :param sock: Socket ssl
     """
     try:
+        time.sleep(10)
         if "TLSv1.3" not in sock.cipher()[1]:
             raise Exception("La conexion no es TLSv1.3")
 
         message = json.loads(sock.recv(1024).decode('ascii'))
 
         if db.exist_user_and_pass(message["user"], message["password"]):
+            print(message["message"])
             sock.send(b"200")
         else:
             sock.send(b"403")
