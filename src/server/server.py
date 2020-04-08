@@ -60,7 +60,11 @@ def init_server_socket(main_socket):
         f"Conexion aceptada {client_ip}: {client_port}. \
         \nProcesando la peticion..."
     )
-    certificate_path = os.path.join(base_path, "certificates", "certificate.pem")
+    certificate_path = os.path.join(
+        base_path,
+        "certificates",
+        "certificate.pem"
+    )
     private_path = os.path.join(base_path, "certificates", "key.pem")
     context = ssl.SSLContext(ssl.PROTOCOL_TLS,
                              ssl.OP_NO_SSLv2,
@@ -70,9 +74,9 @@ def init_server_socket(main_socket):
                              ssl.OP_NO_TLSv1_2
                              )  # TLS 1.3
 
-    ciphers = 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:' \
-              'TLS_AES_128_GCM_SHA256:TLS_AES_128_CCM_8_SHA256:TLS_AES_128_CCM_SHA256'
-    context.set_ciphers(ciphers)
+    # ciphers = 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:' \
+    #           'TLS_AES_128_GCM_SHA256:TLS_AES_128_CCM_8_SHA256:TLS_AES_128_CCM_SHA256'
+    # context.set_ciphers(ciphers)
 
     context.load_cert_chain(
         certificate_path,
@@ -95,7 +99,6 @@ def process_request(sock):
     :param sock: Socket ssl
     """
     try:
-        time.sleep(10)
         if "TLSv1.3" not in sock.cipher()[1]:
             raise Exception("La conexion no es TLSv1.3")
 
